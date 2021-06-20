@@ -14,7 +14,7 @@
 * Clone the project - `git clone git@github.com:PratikAwaik/breddit.git`
 * Run `npm install` to install the dependencies for the project.
 * For the database you need to create an account MongoDB Atlas. Follow the steps [here](https://developer.mozilla.org/en-US/docs/Learn/Server-side/Express_Nodejs/mongoose#setting_up_the_mongodb_database)
-* After setting up the databse, create a `.env` file in the root and add this line `MONGODB_URI=<Your MongoDB URL here>`
+* After setting up the databse, create a `.env` file in the root and add this line `MONGODB_URI=<Your MongoDB URL here>`. Replace `<>` with your MongoDB URL.
 * Now, in your terminal run `npm run serverstart` to start your local server.
 * Hop onto the browser and open `localhost:3000`.
 
