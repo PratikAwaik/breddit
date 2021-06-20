@@ -1,0 +1,22 @@
+*** MODELS ***
+/**
+ * User(Model)
+   - first_name
+   - last_name
+   - username
+   - password
+
+  * Post(Model)
+   - title
+   - message
+   - user(ref -> User)
+   - timestamp
+
+  * Club(Model)
+   - name
+   - description
+   - profile_picture (image)
+   - admin(ref -> User) (ONLY 1)
+   - members(ref -> User) (MORE THAN 1) (WHEN USER CLICKS ON JOIN CLUB, ADD HIM TO MEMBERS LIST)
+   - posts(ref -> Post) (0 or MORE)
+*/

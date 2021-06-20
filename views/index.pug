@@ -1,0 +1,11 @@
+extends layout
+
+block content
+  if currUser
+    h1(class='text-center') Welcome, #{currUser.username}
+  
+  ul 
+    each club in clubs 
+      li 
+        a(href=club.url)= club.name 
+    

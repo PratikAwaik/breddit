@@ -1,0 +1,28 @@
+body {
+  padding: 0.75rem 2rem;
+  font: 14px "Source Sans Pro", sans-serif, Helvetica, Arial;
+}
+
+a {
+  color: #00B7FF;
+}
+
+.auth-container {
+  max-height: 100vh;
+  width: 65%;
+  margin: auto;
+}
+
+.form-container {
+  width: 100%;
+}
+
+.club-profile-pic {
+  width: 200px;
+  height: 200px;
+}
+
+.club-profile-pic img {
+  width: 80%;
+  border-radius: 50%;
+}

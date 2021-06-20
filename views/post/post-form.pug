@@ -1,0 +1,26 @@
+extends ../layout
+
+block content 
+    div(class='d-flex auth-container justify-content-center align-items-center')
+        div(class='form-container d-flex flex-column')
+            div(class='form-header') 
+                h1(class='text-center h1 mt-3') Create New Post
+            div(class='form-body')
+                form(action='' method='POST')
+                    //- Title
+                    div(class='form-group mt-3') 
+                        label(for='post_title' class='mb-2') Title 
+                        input(type='text' name='post_title' class='form-control' id="post_title" required value=post ? post.title : '')
+                    
+                        if errors && errors.filter(err => err.param === 'post_title')[0]
+                            div(class='alert alert-danger my-2 px-3 py-1')= errors.filter(err => err.param === 'post_title')[0].msg 
+                    
+                    //- Message
+                    div(class='form-group mt-3') 
+                        label(for='post_message' class='mb-2') Message
+                        textarea(cols="30" rows="5" name='post_message' class='form-control' id="post_message" required)= post ? post.message : '' 
+
+                        if errors && errors.filter(err => err.param === 'post_message')[0]
+                            div(class='alert alert-danger my-2 px-3 py-1')= errors.filter(err => err.param === 'post_message')[0].msg
+                    
+                    button(type="submit" class="btn btn-primary mt-3") Post

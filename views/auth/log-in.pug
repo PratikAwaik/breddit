@@ -1,0 +1,31 @@
+extends ../layout
+
+block content 
+    div(class='d-flex auth-container justify-content-center align-items-center')
+        div(class='form-container d-flex flex-column')
+            div(class='form-header') 
+                h1(class='text-center h1 mt-3')= title
+            div(class='form-body')
+                form(action='' method='POST')
+                    
+                    //- Username
+                    div(class='form-group mt-3') 
+                        label(for='username' class='mb-2') Username 
+                        input(type='text' name='username' value=previousUsername.length > 0 ? previousUsername[0] : '' class='form-control' id="username" placeholder='Joe Mama' required)
+                    
+                    if errorUsername.length > 0
+                        div(class='alert alert-danger my-2 px-3 py-1')= errorUsername[0]
+
+                    //- Password
+                    div(class='form-group mt-3') 
+                        label(for='password' class='mb-2') Password 
+                        input(type='password' name='password' class='form-control' id="password" required)
+
+                    if errorPassword.length > 0
+                        div(class='alert alert-danger my-2 px-3 py-1')= errorPassword[0]
+
+                    button(type="submit" class="btn btn-primary mt-3") Log In
+
+            div(class="h6 my-3") Don't have an account? 
+                a(href='/register' class='primary-link') Sign Up  
+

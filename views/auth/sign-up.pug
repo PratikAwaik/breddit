@@ -1,0 +1,52 @@
+extends ../layout
+
+block content 
+    div(class='d-flex auth-container justify-content-center align-items-center')
+        div(class='form-container d-flex flex-column')
+            div(class='form-header') 
+                h1(class='text-center h1 mt-3')= title
+                p(class='text-center mt-3 h5') Sign Up to create clubs and post messages :)
+            div(class='form-body')
+                form(action='' method='POST')
+                    //- First Name
+                    div(class='form-group mt-3') 
+                        label(for='first-name' class='mb-2') First Name 
+                        input(type='text' name='first_name' class='form-control' id="first-name" placeholder='Adam' required value=user ? user.first_name : '')
+                    
+                        if errors && errors.filter(err => err.param === 'first_name')[0]
+                            div(class='alert alert-danger my-2 px-3 py-1')= errors.filter(err => err.param === 'first_name')[0].msg 
+                    
+                    //- Last Name
+                    div(class='form-group mt-3') 
+                        label(for='last-name' class='mb-2') Last Name 
+                        input(type='text' name='last_name' class='form-control' id="last-name" placeholder='Smith' required value=user ? user.last_name : '')
+
+                        if errors && errors.filter(err => err.param === 'last_name')[0]
+                            div(class='alert alert-danger my-2 px-3 py-1')= errors.filter(err => err.param === 'last_name')[0].msg
+                    
+                    //- Username
+                    div(class='form-group mt-3') 
+                        label(for='username' class='mb-2') Username 
+                        input(type='text' name='username' class='form-control' id="username" placeholder='Joe Mama' required value=user ? user.username : '')
+
+                        if errors && errors.filter(err => err.param === 'username')[0]
+                            div(class='alert alert-danger my-2 px-3 py-1')= errors.filter(err => err.param === 'username')[0].msg
+
+                    //- Password
+                    div(class='form-group mt-3') 
+                        label(for='password' class='mb-2') Password 
+                        input(type='password' name='password' class='form-control' id="password" required)
+
+                    //- Confirm Password
+                    div(class='form-group mt-3') 
+                        label(for='confirm-password' class='mb-2') Confirm Password 
+                        input(type='password' name='confirm_password' class='form-control' id="confirm-password" required)
+
+                        if errors && errors.filter(err => err.param === 'confirm_password')[0]
+                            div(class='alert alert-danger my-2 px-3 py-1')= errors.filter(err => err.param === 'confirm_password')[0].msg
+
+                    button(type="submit" class="btn btn-primary mt-3") Register
+
+            div(class="h6 my-3") Already have an account? 
+                a(href='/login' class='primary-link') Log In  
+

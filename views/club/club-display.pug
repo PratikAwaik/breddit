@@ -1,0 +1,49 @@
+extends ../layout
+
+block content 
+    div(class="club-display-container .container-lg")
+        if errMsg
+            div(class="w-100 alert alert-danger my-2 px-3 py-1")= errMsg
+
+        div(class="club-details d-flex flex-column align-items-start justify-content-center border border-info p-3 my-3")
+            div(class="d-flex justify-content-center align-items-start")
+                div(class="club-profile-pic")
+                    img(src=club.profile_picture, alt="Club Profile Picture")
+
+                div(class="club-info") 
+                    h1(class="h1 text-primary")= club.name 
+                    h5(class="h4 text-secondary")= club.description
+            
+            div(class="club-btns")
+                if currUser && club.members.some(member => member._id.toString() == currUser._id.toString())
+                    a(class="nav-item btn btn-warning" href='/club/' + club._id + '/unjoin') Joined
+                    a(class='nav-item btn btn-outline-success my-2 my-sm-0 mx-2' href='/club/' + club._id + '/post/new') New Post
+                else 
+                    a(class='nav-item btn btn-outline-success my-2 my-sm-0 mx-2' href='/club/' + club._id + '/join') Join Club
+
+                if currUser && club.admin._id == currUser._id
+                    a(class='nav-item btn btn-outline-secondary my-2 my-sm-0 mx-2' href='/club/' + club._id + '/edit') Edit Club
+                    a(class='nav-item btn btn-outline-warning my-2 my-sm-0 mx-2' href='/club/' + club._id + '/delete') Delete Club  
+        
+        h3(class="h3 my-3") All Posts
+
+        div(class="club-posts border border-warning p-3")
+            if !club.posts.length
+                h3(class="h3 text-secondary text-center") No Posts Yet! 
+
+            else 
+                each post in club.posts 
+                    div(class="post-details d-flex flex-column align-items-start")
+                        div(class="post-header d-flex justify-content-between align-items-center w-100")
+                            div(class="post-user mx-2") Posted by 
+                                a(href='/u/' + post.author.username class="link-success")= post.author.username 
+                                span(class="mx-1") on
+                                a(href='/club/' + club._id class="primary-link") #{club.name} 
+
+                        div(class="post-info my-3")
+                            h4(class="h2 post-title")= post.title
+                            h6(class="h6 post-text")= post.message
+                        hr(class="w-100")
+                        div(class="post-footer d-flex justify-content-between align-items-center w-100")
+                            a(class='nav-item btn btn-primary' href='/club/' + club._id + '/post/' + post._id) View Post
+                            div(class="post-time") Posted on #{post.time_stamp}

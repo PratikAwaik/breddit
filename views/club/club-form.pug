@@ -1,0 +1,31 @@
+extends ../layout
+
+block content 
+    div(class='d-flex auth-container justify-content-center align-items-center')
+        div(class='form-container d-flex flex-column')
+            div(class='form-header') 
+                h1(class='text-center h1 mt-3')= title
+            div(class='form-body')
+                form(action='' method='POST' enctype='multipart/form-data')
+                    //- Name
+                    div(class='form-group mt-3') 
+                        label(for='club_name' class='mb-2') Name 
+                        input(type='text' name='club_name' class='form-control' id="club_name" placeholder='Coding Club' required value=club ? club.name : '')
+                    
+                        if errors && errors.filter(err => err.param === 'club_name')[0]
+                            div(class='alert alert-danger my-2 px-3 py-1')= errors.filter(err => err.param === 'club_name')[0].msg 
+                    
+                    //- Description
+                    div(class='form-group mt-3') 
+                        label(for='club_description' class='mb-2') Description
+                        textarea(cols="30" rows="5" name='club_description' class='form-control' id="club_description" placeholder='Write something about your club...' required)= club ? club.description : '' 
+
+                        if errors && errors.filter(err => err.param === 'club_description')[0]
+                            div(class='alert alert-danger my-2 px-3 py-1')= errors.filter(err => err.param === 'club_description')[0].msg
+                    
+                    //- Profile Picture
+                    div(class='form-group mt-3') 
+                        label(for='profile-picture' class='mb-2') Club Profile Picture 
+                        input(type='file' accept='image/*' name='profile_picture' class='form-control' id="profile-picture")
+
+                    button(type="submit" class="btn btn-primary mt-3")= club ? 'Update' : 'Create'

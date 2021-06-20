@@ -1,0 +1,21 @@
+extends ../layout
+
+block content
+    div(class="post-details d-flex flex-column align-items-start border border-warning p-3 my-4")
+        div(class="post-header d-flex justify-content-between align-items-center w-100")
+            div(class="post-user mx-2") Posted by 
+                a(href="" class="link-success")= post.author.username 
+                span(class="mx-1") on
+                a(href='/club/' + post.club._id class="primary-link") #{post.club.name} 
+
+            if post.author._id.toString() == currUser._id.toString()
+                div(class="post-header-btns")
+                    a(class='nav-item btn btn-outline-secondary my-2 my-sm-0 mx-2' href='/club/' + post.club._id + '/post/' + post._id + '/edit') Edit
+                    a(class='nav-item btn btn-outline-warning my-2 my-sm-0 mx-2' href='/club/' + post.club._id + '/post/' + post._id + '/delete') Delete
+
+        div(class="post-info my-3")
+            h4(class="h2 post-title")= post.title
+            h6(class="h6 post-text")= post.message
+
+        div(class="post-footer")
+            div(class="post-time") Posted on #{post.time_stamp}
