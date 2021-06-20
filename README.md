@@ -31,5 +31,6 @@ The project still needs to have much more functionality. Current list of improve
 
 ## Contribute to the project
 
-Submit a pull request if you have any new feature or improvement :)
+Submit a pull request if you have any new feature, improvement or if you have found any bug :)
+
 
