@@ -30,7 +30,7 @@ const app = express();
 // setup mongoose connection
 const mongoose = require('mongoose');
 const demoMongoURL = 'mongodb+srv://demo:kAzd1HlKAh7dxaIn@cluster0.pvwff.mongodb.net/breddit-demo?retryWrites=true&w=majority';
-mongoose.connect(process.env.MONGODB_URI || demoMongoURL, { useNewUrlParser: true, useUnifiedTopology: true });
+mongoose.connect(demoMongoURL || process.env.MONGODB_URI, { useNewUrlParser: true, useUnifiedTopology: true });
 const db = mongoose.connection;
 db.on('error', console.error.bind(console, "MongoDB Connection Error: "));
 
