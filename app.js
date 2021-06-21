@@ -13,10 +13,8 @@ const User = require('./models/user');
 
 /** 
  * Add empty profile photo for clubs
- * Add error messages to login view
- * Convert time_stamp to Human Understandable time
  * Create Users page
- * 
+ * Add 404 page
 */
 
 // dotenv config
@@ -25,6 +23,7 @@ require('dotenv').config();
 // Routes
 const indexRouter = require('./routes/index');
 const clubRouter = require('./routes/club');
+const userRouter = require('./routes/user');
 
 const app = express();
 
@@ -118,6 +117,7 @@ app.use((req, res, next) => {
 
 app.use('/', indexRouter);
 app.use('/club', clubRouter);
+app.use('/u', userRouter);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

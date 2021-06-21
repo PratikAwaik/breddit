@@ -17,6 +17,17 @@ exports.signUpPost = [
                 return Promise.reject("This username is already taken");
             }
         })
+    }).custom(value => {
+        if (value.length < 3 || value.length > 30) { 
+            throw new Error('The username must be more than 3 and less than 30 characters');
+        }
+        return true;
+    }).custom(value => {
+        const expr = /^[a-zA-Z0-9._]*$/;
+        if (!expr.test(value.toLowerCase())) {
+            throw new Error('The username must contain only a-z or A-Z or 0-9 or (.) or (_)');
+        }
+        return true;
     }),
     check('password').exists().escape(),
     check('confirm_password', 'The password does not match with your previous password').exists().custom((value, { req }) => value === req.body.password),

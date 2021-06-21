@@ -196,7 +196,8 @@ exports.postNewPost = [
             message: req.body.post_message, 
             author: res.locals.currUser._id,
             club: req.params.clubId, 
-            time_stamp: Date.now()
+            posted_at: Date.now(), 
+            edited_at: null
         });
 
         newPost.save(function(err) {
@@ -250,7 +251,8 @@ exports.postEditPost = [
         const newPost = {
             title: req.body.post_title, 
             message: req.body.post_message, 
-            _id: req.params.id
+            _id: req.params.id, 
+            edited_at: Date.now(),
         }
 
         Post.findByIdAndUpdate(req.params.id, newPost, function(err, newPost) {

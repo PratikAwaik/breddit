@@ -39,6 +39,8 @@ block content
                                 a(href='/u/' + post.author.username class="link-success")= post.author.username 
                                 span(class="mx-1") on
                                 a(href='/club/' + club._id class="primary-link") #{club.name} 
+                                if post.edited_at
+                                    span(class="text-secondary ms-2") (Edited #{post.getRelativeTimeEdited}) 
 
                         div(class="post-info my-3")
                             h4(class="h2 post-title")= post.title
@@ -46,4 +48,4 @@ block content
                         hr(class="w-100")
                         div(class="post-footer d-flex justify-content-between align-items-center w-100")
                             a(class='nav-item btn btn-primary' href='/club/' + club._id + '/post/' + post._id) View Post
-                            div(class="post-time") Posted on #{post.time_stamp}
+                            div(class="post-time") Posted #{post.getRelativeTimePosted}
