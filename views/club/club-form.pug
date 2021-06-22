@@ -25,7 +25,10 @@ block content
                     
                     //- Profile Picture
                     div(class='form-group mt-3') 
-                        label(for='profile-picture' class='mb-2') Club Profile Picture 
-                        input(type='file' accept='image/*' name='profile_picture' class='form-control' id="profile-picture")
+                        label(for='club-profile-picture' class='mb-2') Club Profile Picture 
+                        input(type='file' accept='image/*' name='club_profile_picture' class='form-control' id="club-profile-picture")
 
-                    button(type="submit" class="btn btn-primary mt-3")= club ? 'Update' : 'Create'
+                        if multerError
+                            div(class='alert alert-danger my-2 px-3 py-1')= multerError
+
+                    button(type="submit" class="btn btn-primary mt-3")= club && club._id ? 'Update' : 'Create'

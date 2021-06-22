@@ -15,6 +15,7 @@ const User = require('./models/user');
  * Add empty profile photo for clubs
  * Create Users page
  * Add 404 page
+ * Store image in database?
 */
 
 // dotenv config
@@ -74,7 +75,7 @@ passport.use('signup', new LocalStrategy({
       const user = new User({
           first_name: req.body.first_name, 
           last_name: req.body.last_name,
-          username: username.toLowerCase(), 
+          username: username, 
           password: hashedPass
       });
 

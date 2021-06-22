@@ -8,7 +8,7 @@ block content
         div(class="club-details d-flex flex-column align-items-start justify-content-center border border-info p-3 my-3")
             div(class="d-flex justify-content-center align-items-start")
                 div(class="club-profile-pic")
-                    img(src=club.profile_picture, alt="Club Profile Picture")
+                    img(src=club.profile_picture ? club.profile_picture : '/images/group.svg', alt="Club Profile Picture")
 
                 div(class="club-info") 
                     h1(class="h1 text-primary")= club.name 
@@ -21,7 +21,7 @@ block content
                 else 
                     a(class='nav-item btn btn-outline-success my-2 my-sm-0 mx-2' href='/club/' + club._id + '/join') Join Club
 
-                if currUser && club.admin._id == currUser._id
+                if currUser && club.admin._id.toString() == currUser._id.toString()
                     a(class='nav-item btn btn-outline-secondary my-2 my-sm-0 mx-2' href='/club/' + club._id + '/edit') Edit Club
                     a(class='nav-item btn btn-outline-warning my-2 my-sm-0 mx-2' href='/club/' + club._id + '/delete') Delete Club  
         

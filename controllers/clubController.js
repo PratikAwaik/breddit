@@ -6,7 +6,16 @@ const Post = require('../models/post');
 const { body, validationResult } = require('express-validator');
 const fs = require('fs');
 
-const upload = require('../middlewares/uploadMiddleware');
+// initialize multer for file Upload
+const multer = require('multer');
+const storage = multer.memoryStorage();
+const upload = multer({ 
+    storage: storage, 
+    limits: {
+        fileSize: 120000, 
+    }, 
+});
+
 const ensureAuth = require('../middlewares/authMiddleware');
 
 /**
@@ -31,19 +40,27 @@ exports.clubNewPost = [
     body('club_name', 'Name must be specified').trim().escape(),
     body('club_description', 'Description must not be empty').trim().escape(),
 
-    upload.single('profile_picture'),
+    upload.single('club_profile_picture'),
 
-    (req, res, next) => {
+    (err, req, res, next) => {
         const errors = validationResult(req);
-
-        if (!errors.isEmpty()) {
-            return res.render('club-form', { title: 'Create New Club', errors: errors.array() });
+ 
+        if (err || !errors.isEmpty()) {
+            const inputClubDetails = {
+                name: req.body.club_name, 
+                description: req.body.club_description, 
+            };
+            return res.render('club-form', { title: 'Create New Club', club: inputClubDetails, errors: errors.array(), multerError: (err instanceof multer.MulterError) ? err.split(' ') : null });
         }
+
+        const imgObj = req.file;
 
         const club = new Club({
             name: req.body.club_name, 
             description: req.body.club_description, 
-            profile_picture: '/uploads/' + req.file.filename,
+            profile_picture: imgObj ? `data:${imgObj.mimetype};base64,${Buffer.from(imgObj.buffer).toString('base64')}` : null,
+            created_at: Date.now(), 
+            updated_at: null,
             admin: res.locals.currUser._id, 
             members: new Array(res.locals.currUser._id),
         });
@@ -116,28 +133,32 @@ exports.clubEditPost = [
     body('club_name', 'Name must be specified').trim().isLength({ min: 1 }).escape(),
     body('club_description', 'Description must not be empty').trim().isLength({ min: 1 }).escape(),
 
-    upload.single('profile_picture'),
+    upload.single('club_profile_picture'),
 
-    (req, res, next) => {
+    (err, req, res, next) => {
         const errors = validationResult(req);
 
-        if (!errors.isEmpty()) {
-            return res.render('club-form', { title: 'Update Club', errors: errors.array() });
+        if (err || !errors.isEmpty()) {
+            const inputClubDetails = {
+                name: req.body.club_name, 
+                description: req.body.club_description,
+                _id: req.params.id,
+            };
+            return res.render('club-form', { title: 'Update Club', club: inputClubDetails, errors: errors.array(), multerError: (err instanceof multer.MulterError) ? 'This File is too large. Please upload a smaller file.' : null });
         }
 
-        Club.findById(req.params.id).exec(function(err, club) {
-            if (err) return next(err);
+        const imgObj = req.file;
+        const newDetails = {
+            name: req.body.club_name, 
+            description: req.body.club_description, 
+            updated_at: Date.now(),
+        };
 
-            const newDetails = {
-                name: req.body.club_name, 
-                description: req.body.club_description, 
-                profile_picture: req.file.filename ? '/uploads/' + req.file.filename : club.profile_picture,
-            };
-    
-            Club.findByIdAndUpdate(req.params.id, newDetails, function(err, club) {
-                if (err) return next(err);
-                res.redirect(club.url);
-            });
+        if (imgObj) newDetails.profile_picture = `data:${imgObj.mimetype};base64,${Buffer.from(imgObj.buffer).toString('base64')}`;
+
+        Club.findByIdAndUpdate(req.params.id, newDetails, function(err, club) {
+            if (err) return next(err);
+            res.redirect(club.url);
         });
     }
 ];
