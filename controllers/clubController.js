@@ -37,20 +37,50 @@ exports.clubNewGet = [
 ];
 
 exports.clubNewPost = [
-    body('club_name', 'Name must be specified').trim().escape(),
-    body('club_description', 'Description must not be empty').trim().escape(),
-
     upload.single('club_profile_picture'),
 
+    body('club_name').trim().escape().custom(value => {
+        return Club.exists({ 'name': { $regex: value, $options: 'i' }}).then(doesExist => {
+            if (doesExist) {
+                return Promise.reject('This club aleady exists');
+            }
+        });
+    }).custom(value => {
+        if (value.length < 3 || value.length > 30) {
+            throw new Error('The username must be more than 3 and less than 30 characters');
+        }
+        return true;
+    }).custom(value => {
+        const expr = /^[a-zA-Z0-9._]*$/;
+        if (!expr.test(value.toLowerCase())) {
+            throw new Error('The username must contain only a-z or A-Z or 0-9 or (.) or (_)');
+        }
+        return true;
+    }),
+    
+    body('club_description', 'Description must not be empty').trim().escape(),
+
     (err, req, res, next) => {
+        if (err instanceof multer.MulterError) {
+            const inputClubDetails = {
+                name: req.body.club_name, 
+                description: req.body.club_description, 
+                _id: req.params.id
+            };
+            return res.render('club-form', { title: 'Create New Club', club: inputClubDetails, multerError: (err instanceof multer.MulterError) ? err.toString().split(':')[1] : null });
+        }
+        next();
+    },
+
+    (req, res, next) => {
         const errors = validationResult(req);
  
-        if (err || !errors.isEmpty()) {
+        if (!errors.isEmpty()) {
             const inputClubDetails = {
                 name: req.body.club_name, 
                 description: req.body.club_description, 
             };
-            return res.render('club-form', { title: 'Create New Club', club: inputClubDetails, errors: errors.array(), multerError: (err instanceof multer.MulterError) ? err.split(' ') : null });
+            return res.render('club-form', { title: 'Create New Club', club: inputClubDetails, errors: errors.array() });
         }
 
         const imgObj = req.file;
@@ -130,21 +160,33 @@ exports.clubEditGet = [
 ];
 
 exports.clubEditPost = [
-    body('club_name', 'Name must be specified').trim().isLength({ min: 1 }).escape(),
-    body('club_description', 'Description must not be empty').trim().isLength({ min: 1 }).escape(),
+    body('club_name', 'Name must be specified').trim().escape(),
+    body('club_description', 'Description must not be empty').trim().escape(),
 
     upload.single('club_profile_picture'),
 
     (err, req, res, next) => {
+        if (err instanceof multer.MulterError) {
+            const inputClubDetails = {
+                name: req.body.club_name, 
+                description: req.body.club_description, 
+                _id: req.params.id
+            };
+            return res.render('club-form', { title: 'Create New Club', club: inputClubDetails, multerError: (err instanceof multer.MulterError) ? err.toString().split(':')[1] : null });
+        }
+        next();
+    },
+
+    (req, res, next) => {
         const errors = validationResult(req);
 
-        if (err || !errors.isEmpty()) {
+        if (!errors.isEmpty()) {
             const inputClubDetails = {
                 name: req.body.club_name, 
                 description: req.body.club_description,
                 _id: req.params.id,
             };
-            return res.render('club-form', { title: 'Update Club', club: inputClubDetails, errors: errors.array(), multerError: (err instanceof multer.MulterError) ? 'This File is too large. Please upload a smaller file.' : null });
+            return res.render('club-form', { title: 'Update Club', club: inputClubDetails, errors: errors.array() });
         }
 
         const imgObj = req.file;
