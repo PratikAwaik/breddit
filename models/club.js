@@ -19,14 +19,14 @@ ClubSchema
     .get(function() { return '/club/' + this._id });
 
 ClubSchema
-    .virtual('getRelativeTimePosted')
+    .virtual('getRelativeTimeCreated')
     .get(function() { 
         const formattedTime = moment(this.created_at).local(); 
         return moment(formattedTime, 'YYYYMMDD').fromNow();
     });
 
 ClubSchema
-    .virtual('getRelativeTimeEdited')
+    .virtual('getRelativeTimeUpdated')
     .get(function() {
         const formattedTime = moment(this.updated_at).local(); 
         return moment(formattedTime, 'YYYYMMDD').fromNow();
