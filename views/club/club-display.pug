@@ -13,6 +13,8 @@ block content
                 div(class="club-info") 
                     h1(class="h1 text-primary")= club.name 
                     h5(class="h4 text-secondary")= club.description
+
+            h6(class="h6 text-secondary mb-3") Created #{club.getRelativeTimeCreated} 
             
             div(class="club-btns")
                 if currUser && club.members.some(member => member._id.toString() == currUser._id.toString())
