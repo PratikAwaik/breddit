@@ -12,9 +12,9 @@ exports.signUpPost = [
     body('first_name', 'First Name must be specified').trim().isLength({ min: 1 }).escape(),
     body('last_name', 'Last Name must be specified').trim().isLength({ min: 1 }).escape(),
     body('username', 'Username must be specified').trim().isLength({ min: 1 }).escape().custom(value => {
-        return User.findOne({ 'username': value.toLowerCase() }).then(user => {
+        return User.exists({ 'username': { $regex: value, $options: 'i' } }).then(user => {
             if (user) {
-                return Promise.reject("This username is already taken");
+                return Promise.reject('This username is already taken');
             }
         })
     }).custom(value => {
